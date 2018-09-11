@@ -1,10 +1,35 @@
 import 'package:flutter/material.dart';
 
-class ChatMessage extends StatelessWidget {
-  ChatMessage({this.text, this.animationController, this.isSendMessage});
+class ChatMessage extends StatefulWidget {
+  ChatMessage({this.text, this.isSendMessage});
+
   final String text;
-  final AnimationController animationController;
   final bool isSendMessage;
+
+  @override
+  _ChatMessageState createState() => _ChatMessageState();
+
+}
+
+class _ChatMessageState extends State<ChatMessage> with SingleTickerProviderStateMixin{
+
+  AnimationController animationController;
+
+  @override
+  void initState() {
+    animationController = AnimationController(
+      duration: Duration(milliseconds: 700),
+      vsync: this,
+    );
+    super.initState();
+    animationController.forward();
+  }
+
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,7 +43,7 @@ class ChatMessage extends StatelessWidget {
 
   List<Widget> _buildMessage(BuildContext context) {
     String _name = 'Ben';
-    return isSendMessage
+    return widget.isSendMessage
         ? <Widget>[
       Container(
         margin: const EdgeInsets.only(right: 16.0),
@@ -31,7 +56,7 @@ class ChatMessage extends StatelessWidget {
             Text(_name, style: Theme.of(context).textTheme.subhead),
             Container(
               margin: const EdgeInsets.only(top: 5.0),
-              child: Text(text),
+              child: Text(widget.text),
             ),
           ],
         ),
@@ -45,7 +70,7 @@ class ChatMessage extends StatelessWidget {
             Text(_name, style: Theme.of(context).textTheme.subhead),
             Container(
               margin: const EdgeInsets.only(top: 5.0),
-              child: Text(text),
+              child: Text(widget.text),
             ),
           ],
         ),

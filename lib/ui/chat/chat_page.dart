@@ -10,34 +10,11 @@ class ChatPage extends StatefulWidget {
   _ChatPageState createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
-  final List<ChatMessage> _messages = <ChatMessage>[];
+class _ChatPageState extends State<ChatPage> {
   final TextEditingController _textController = TextEditingController();
   bool _isComposing = false;
 
   void _handleSubmitted(String text) {
-    _textController.clear();
-    setState(() {
-      _isComposing = false;
-    });
-    ChatMessage message = ChatMessage(
-      text: text,
-      animationController: AnimationController(
-        duration: Duration(milliseconds: 700),
-        vsync: this,
-      ),
-      isSendMessage: _messages.length % 2 == 0,
-    );
-    setState(() {
-      _messages.insert(0, message);
-    });
-    message.animationController.forward();
-  }
-
-  void dispose() {
-    for (ChatMessage message in _messages)
-      message.animationController.dispose();
-    super.dispose();
   }
 
   Widget _buildTextComposer() {
@@ -100,25 +77,21 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
             stream: Firestore.instance.collection('chat').snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (!snapshot.hasData) return Text('Loading...');
-              _messages.clear();
-              _messages.addAll(
-                  snapshot.data.documents.map((DocumentSnapshot document) {
-                return ChatMessage(
-                  text: document['message'],
-                  animationController: AnimationController(
-                    duration: Duration(milliseconds: 700),
-                    vsync: this,
-                  ),
-                  isSendMessage: true,
-                );
-              }).toList());
-              return ListView.builder(
-                padding: EdgeInsets.all(8.0),
-                reverse: true,
-                itemBuilder: (_, int index) => _messages[index],
-                itemCount: _messages.length,
-              );
+                  if (!snapshot.hasData) return Text('Loading...');
+                  final List<ChatMessage> _messages = <ChatMessage>[];
+                  _messages.addAll(
+                      snapshot.data.documents.map((DocumentSnapshot document) {
+                    return ChatMessage(
+                      text: document['message'],
+                      isSendMessage: true,
+                    );
+                  }).toList());
+                  return ListView.builder(
+                    padding: EdgeInsets.all(8.0),
+                    reverse: true,
+                    itemBuilder: (_, int index) => _messages[index],
+                    itemCount: _messages.length,
+                  );
             },
           )),
           Divider(height: 1.0),
