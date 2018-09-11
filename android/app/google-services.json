@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "831308878158",
+    "firebase_url": "https://my-flutter-f9cc4.firebaseio.com",
+    "project_id": "my-flutter-f9cc4",
+    "storage_bucket": "my-flutter-f9cc4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831308878158:android:a1b779802e5a5485",
+        "android_client_info": {
+          "package_name": "site.tsun.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "831308878158-sppbts73rthu3oo89lnrqo1s9jgle69t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "site.tsun.chat",
+            "certificate_hash": "64e1baadecf775c1d98fed878e0fa93478817186"
+          }
+        },
+        {
+          "client_id": "831308878158-o1in44ovef4ucg0aq76ou7hb3ip7q8j8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAmFI6jN8gGqeDCA3apCVyB8UMaR7CqKY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "831308878158-o1in44ovef4ucg0aq76ou7hb3ip7q8j8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
