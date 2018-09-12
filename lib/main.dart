@@ -3,20 +3,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_chat/ui/chat/chat_page.dart';
+import 'package:flutter_chat/ui/auth/login_page.dart';
 
 void main() {
   runApp(ChatApp());
 }
 
 final ThemeData kIOSTheme = ThemeData(
-  primarySwatch: Colors.orange,
+  primarySwatch: Colors.red,
   primaryColor: Colors.grey[100],
   primaryColorBrightness: Brightness.light,
 );
 
 final ThemeData kDefaultTheme = ThemeData(
   primarySwatch: Colors.purple,
-  accentColor: Colors.orangeAccent[400],
+  accentColor: Colors.red[300],
 );
 
 class ChatApp extends StatelessWidget {
@@ -27,7 +28,10 @@ class ChatApp extends StatelessWidget {
       theme: defaultTargetPlatform == TargetPlatform.iOS
           ? kIOSTheme
           : kDefaultTheme,
-      home: ChatPage(),
+      routes: {
+        '/chat': (BuildContext context) => ChatPage()
+      },
+      home: LoginPage(),
     );
   }
 }

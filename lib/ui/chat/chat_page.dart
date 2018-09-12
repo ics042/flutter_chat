@@ -23,6 +23,13 @@ class _ChatPageState extends State<ChatPage> {
       child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Row(children: <Widget>[
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 4.0),
+              child: IconButton(
+                  icon: Icon(Icons.photo_camera),
+                  onPressed: (){}
+              ),
+            ),
             Flexible(
               child: TextField(
                 controller: _textController,
