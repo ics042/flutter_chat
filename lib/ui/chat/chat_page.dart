@@ -15,6 +15,9 @@ class _ChatPageState extends State<ChatPage> {
   bool _isComposing = false;
 
   void _handleSubmitted(String text) {
+    Firestore.instance.collection('chat').document()
+        .setData({ 'message': _textController.text});
+    _textController.text = null;
   }
 
   Widget _buildTextComposer() {
@@ -40,28 +43,28 @@ class _ChatPageState extends State<ChatPage> {
                 },
                 onSubmitted: _handleSubmitted,
                 decoration:
-                    InputDecoration.collapsed(hintText: "Send a message"),
+                InputDecoration.collapsed(hintText: "Send a message"),
               ),
             ),
             Container(
                 margin: EdgeInsets.symmetric(horizontal: 4.0),
                 child: Theme.of(context).platform == TargetPlatform.iOS
                     ? CupertinoButton(
-                        child: Text("Send"),
-                        onPressed: _isComposing
-                            ? () => _handleSubmitted(_textController.text)
-                            : null,
-                      )
+                  child: Text("Send"),
+                  onPressed: _isComposing
+                      ? () => _handleSubmitted(_textController.text)
+                      : null,
+                )
                     : IconButton(
-                        icon: Icon(Icons.send),
-                        onPressed: _isComposing
-                            ? () => _handleSubmitted(_textController.text)
-                            : null,
-                      )),
+                  icon: Icon(Icons.send),
+                  onPressed: _isComposing
+                      ? () => _handleSubmitted(_textController.text)
+                      : null,
+                )),
           ]),
           decoration: Theme.of(context).platform == TargetPlatform.iOS
               ? BoxDecoration(
-                  border: Border(top: BorderSide(color: Colors.grey[200])))
+              border: Border(top: BorderSide(color: Colors.grey[200])))
               : null),
     );
   }
@@ -71,7 +74,7 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
           title: Text("Chat"),
           elevation:
-              Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0),
+          Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0),
       body: _buildBody(), //new
     );
   }
@@ -81,26 +84,26 @@ class _ChatPageState extends State<ChatPage> {
         child: Column(children: <Widget>[
           Flexible(
               child: StreamBuilder<QuerySnapshot>(
-            stream: Firestore.instance.collection('chat').snapshots(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData) return Text('Loading...');
+                stream: Firestore.instance.collection('chat').snapshots(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) return Center(child:Text('Loading...'));
                   final List<ChatMessage> _messages = <ChatMessage>[];
                   _messages.addAll(
                       snapshot.data.documents.map((DocumentSnapshot document) {
-                    return ChatMessage(
-                      text: document['message'],
-                      isSendMessage: true,
-                    );
-                  }).toList());
+                        return ChatMessage(
+                          text: document['message'],
+                          isSendMessage: true,
+                        );
+                      }).toList());
                   return ListView.builder(
                     padding: EdgeInsets.all(8.0),
                     reverse: true,
                     itemBuilder: (_, int index) => _messages[index],
                     itemCount: _messages.length,
                   );
-            },
-          )),
+                },
+              )),
           Divider(height: 1.0),
           Container(
             decoration: BoxDecoration(color: Theme.of(context).cardColor),
@@ -109,7 +112,7 @@ class _ChatPageState extends State<ChatPage> {
         ]),
         decoration: Theme.of(context).platform == TargetPlatform.iOS
             ? BoxDecoration(
-                border: Border(top: BorderSide(color: Colors.grey[200])))
+            border: Border(top: BorderSide(color: Colors.grey[200])))
             : null);
   }
 }

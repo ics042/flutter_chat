@@ -73,7 +73,10 @@ class _LoginState extends State<_Login> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Center(
-                child: RaisedButton(
+                child: SizedBox(
+                  width: 100.0,
+                  height: 50.0,
+                  child: RaisedButton(
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       _login();
@@ -83,7 +86,7 @@ class _LoginState extends State<_Login> {
                     }
                   },
                   child: _isSubmitting ? CircularProgressIndicator() : Text('Login'),
-                ),
+                ),),
               ),
             ),
           ],

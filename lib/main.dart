@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_chat/ui/chat/chat_page.dart';
 import 'package:flutter_chat/ui/auth/login_page.dart';
+import 'package:flutter_chat/ui/chat/chat_page.dart';
 
 void main() {
   runApp(ChatApp());
@@ -29,7 +29,7 @@ class ChatApp extends StatelessWidget {
           ? kIOSTheme
           : kDefaultTheme,
       routes: {
-        '/chat': (BuildContext context) => ChatPage()
+        '/chat': (context) => ChatPage()
       },
       home: LoginPage(),
     );

@@ -1,6 +1,6 @@
 # flutter_chat
 
-A new Flutter chat application customized based on [friendlychat-steps](https://github.com/flutter/friendlychat-steps).
+A new Flutter application.
 
 ## Getting Started
 

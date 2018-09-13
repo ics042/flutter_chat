@@ -8,7 +8,5 @@ build/
 
 .flutter-plugins
 .idea/
-.vscode/
-
 *.iml
 *.log
