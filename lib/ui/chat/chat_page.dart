@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter_chat/ui/chat/chat_message.dart';
 
@@ -13,11 +14,19 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _textController = TextEditingController();
   bool _isComposing = false;
+  FirebaseUser currentUser;
 
-  void _handleSubmitted(String text) {
+  @override
+  void initState() async{
+    currentUser = await FirebaseAuth.instance.currentUser();
+    super.initState();
+  }
+
+
+  void _handleSubmitted(String text) async {
     Firestore.instance.collection('chat').document()
-        .setData({ 'message': _textController.text});
-    _textController.text = null;
+        .setData({ 'sendUser': currentUser.email, 'message': _textController.text, 'created_at': DateTime.now().toString()});
+    _textController.clear();
   }
 
   Widget _buildTextComposer() {
@@ -84,7 +93,7 @@ class _ChatPageState extends State<ChatPage> {
         child: Column(children: <Widget>[
           Flexible(
               child: StreamBuilder<QuerySnapshot>(
-                stream: Firestore.instance.collection('chat').snapshots(),
+                stream: Firestore.instance.collection('chat').where("sendUser", isEqualTo: currentUser.email).snapshots(),
                 builder:
                     (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData) return Center(child:Text('Loading...'));

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_chat/ui/auth/login_page.dart';
 import 'package:flutter_chat/ui/chat/chat_page.dart';
+import 'package:flutter_chat/ui/chat/chat_list_page.dart';
 
 void main() {
   runApp(ChatApp());
@@ -29,7 +30,8 @@ class ChatApp extends StatelessWidget {
           ? kIOSTheme
           : kDefaultTheme,
       routes: {
-        '/chat': (context) => ChatPage()
+        '/chat': (context) => ChatPage(),
+        '/chat_list': (context) => ChatListPage()
       },
       home: LoginPage(),
     );

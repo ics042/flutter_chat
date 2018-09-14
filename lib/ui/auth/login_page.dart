@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class LoginPage extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,7 +108,7 @@ class _LoginState extends State<_Login> {
         setState(() {
           _isSubmitting = false;
         });
-        Navigator.of(context).pushReplacementNamed('/chat');
+        _afterLogin(user);
       }
     } on PlatformException catch (e) {
       setState(() {
@@ -115,5 +117,16 @@ class _LoginState extends State<_Login> {
       Scaffold.of(context).showSnackBar(SnackBar(content: Text(e.message), duration: Duration(milliseconds: 2000),));
       print(e.toString());
     }
+  }
+
+  void _afterLogin(FirebaseUser user) async {
+    final QuerySnapshot result = await Firestore.instance.collection('users').where('id', isEqualTo: user.uid).getDocuments();
+    final List<DocumentSnapshot> documents = result.documents;
+    if (documents.length == 0) {
+      // create a new user if it doesn't exist in users collection
+      await Firestore.instance.collection('users').document(user.uid).setData(
+          {'nickname': user.displayName, 'email': user.email, 'id': user.uid});
+    }
+    Navigator.of(context).pushReplacementNamed('/chat_list');
   }
 }
