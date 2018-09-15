@@ -30,7 +30,6 @@ class ChatApp extends StatelessWidget {
           ? kIOSTheme
           : kDefaultTheme,
       routes: {
-        '/chat': (context) => ChatPage(),
         '/chat_list': (context) => ChatListPage()
       },
       home: LoginPage(),

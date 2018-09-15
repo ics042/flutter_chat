@@ -7,6 +7,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_chat/ui/chat/chat_message.dart';
 
 class ChatPage extends StatefulWidget {
+  ChatPage(this.peerUserId, this.documentId);
+
+  final String peerUserId;
+  final String documentId;
   @override
   _ChatPageState createState() => _ChatPageState();
 }
@@ -14,18 +18,21 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _textController = TextEditingController();
   bool _isComposing = false;
-  FirebaseUser currentUser;
+  FirebaseUser _currentUser;
 
   @override
-  void initState() async{
-    currentUser = await FirebaseAuth.instance.currentUser();
+  void initState() {
+    _initData();
     super.initState();
   }
 
+  void _initData() async {
+    _currentUser = await FirebaseAuth.instance.currentUser();
+  }
 
   void _handleSubmitted(String text) async {
-    Firestore.instance.collection('chat').document()
-        .setData({ 'sendUser': currentUser.email, 'message': _textController.text, 'created_at': DateTime.now().toString()});
+    Firestore.instance.collection('chats').document(widget.documentId).collection(widget.documentId).document()
+        .setData({ 'sendUser': _currentUser.email, 'message': _textController.text, 'created_at': DateTime.now().toString()});
     _textController.clear();
   }
 
@@ -93,7 +100,7 @@ class _ChatPageState extends State<ChatPage> {
         child: Column(children: <Widget>[
           Flexible(
               child: StreamBuilder<QuerySnapshot>(
-                stream: Firestore.instance.collection('chat').where("sendUser", isEqualTo: currentUser.email).snapshots(),
+                stream: Firestore.instance.collection('chats').document(widget.documentId).collection(widget.documentId).snapshots(),
                 builder:
                     (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData) return Center(child:Text('Loading...'));
