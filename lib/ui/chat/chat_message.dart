@@ -42,7 +42,7 @@ class _ChatMessageState extends State<ChatMessage> with SingleTickerProviderStat
   }
 
   List<Widget> _buildMessage(BuildContext context) {
-    String _name = 'Ben';
+    String _name = widget.isSendMessage ? 'Me' : 'Admin';
     return widget.isSendMessage
         ? <Widget>[
       Container(
@@ -77,7 +77,7 @@ class _ChatMessageState extends State<ChatMessage> with SingleTickerProviderStat
       ),
       Container(
         margin: const EdgeInsets.only(left: 16.0),
-        child: CircleAvatar(child: Text(_name[0])),
+        child: CircleAvatar(child: Text(_name[0]), backgroundColor: Colors.black,),
       ),
     ];
   }
