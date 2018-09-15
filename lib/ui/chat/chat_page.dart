@@ -32,7 +32,7 @@ class _ChatPageState extends State<ChatPage> {
 
   void _handleSubmitted(String text) async {
     Firestore.instance.collection('chats').document(widget.documentId).collection(widget.documentId).document()
-        .setData({ 'sendUser': _currentUser.email, 'message': _textController.text, 'created_at': DateTime.now().toString()});
+        .setData({ 'sendUserId': _currentUser.uid, 'message': _textController.text, 'created_at': DateTime.now().toString()});
     _textController.clear();
   }
 
@@ -100,7 +100,7 @@ class _ChatPageState extends State<ChatPage> {
         child: Column(children: <Widget>[
           Flexible(
               child: StreamBuilder<QuerySnapshot>(
-                stream: Firestore.instance.collection('chats').document(widget.documentId).collection(widget.documentId).snapshots(),
+                stream: Firestore.instance.collection('chats').document(widget.documentId).collection(widget.documentId).orderBy('created_at', descending: true).snapshots(),
                 builder:
                     (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData) return Center(child:Text('Loading...'));
@@ -109,7 +109,7 @@ class _ChatPageState extends State<ChatPage> {
                       snapshot.data.documents.map((DocumentSnapshot document) {
                         return ChatMessage(
                           text: document['message'],
-                          isSendMessage: true,
+                          isSendMessage: document['sendUserId'] == _currentUser.uid,
                         );
                       }).toList());
                   return ListView.builder(
