@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
-class ChatMessage extends StatefulWidget {
-  ChatMessage({this.text, this.isSendMessage});
+import 'package:cached_network_image/cached_network_image.dart';
 
-  final String text;
+import 'package:flutter_chat/common/constants.dart';
+
+class ChatMessage extends StatefulWidget {
+  ChatMessage({this.message, this.isSendMessage, this.messageType});
+
+  final String message;
   final bool isSendMessage;
+  final int messageType;
 
   @override
   _ChatMessageState createState() => _ChatMessageState();
@@ -56,7 +61,7 @@ class _ChatMessageState extends State<ChatMessage> with SingleTickerProviderStat
             Text(_name, style: Theme.of(context).textTheme.subhead),
             Container(
               margin: const EdgeInsets.only(top: 5.0),
-              child: Text(widget.text),
+              child: _buildContent(),
             ),
           ],
         ),
@@ -70,7 +75,7 @@ class _ChatMessageState extends State<ChatMessage> with SingleTickerProviderStat
             Text(_name, style: Theme.of(context).textTheme.subhead),
             Container(
               margin: const EdgeInsets.only(top: 5.0),
-              child: Text(widget.text),
+              child: _buildContent(),
             ),
           ],
         ),
@@ -80,5 +85,35 @@ class _ChatMessageState extends State<ChatMessage> with SingleTickerProviderStat
         child: CircleAvatar(child: Text(_name[0]), backgroundColor: Colors.black,),
       ),
     ];
+  }
+
+  Widget _buildContent() {
+    Widget content;
+    switch (widget.messageType) {
+      case typeMsg:
+        content = Text(widget.message);
+        break;
+      case typeImage:
+        content = CachedNetworkImage(
+          placeholder: Container(
+            child: CircularProgressIndicator(),
+            width: 200.0,
+            height: 200.0,
+            padding: EdgeInsets.all(70.0),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.all(
+                Radius.circular(8.0),
+              ),
+            ),
+          ),
+          imageUrl: widget.message,
+          width: 200.0,
+          height: 200.0,
+          fit: BoxFit.cover,
+        );
+        break;
+    }
+    return content;
   }
 }
